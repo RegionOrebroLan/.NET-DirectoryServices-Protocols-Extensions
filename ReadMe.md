@@ -9,7 +9,7 @@ Additions and extensions for .NET directory-services protocols.
 ### 1.1 Configuration
 
 - [appsettings.json](/Source/Tests/Integration-tests/appsettings.json)
-- [ConfigureServices](/Source/Tests/Integration-tests/DirectoryTest.cs#L142)
+- [ConfigureServices](/Source/Tests/Integration-tests/DirectoryTest.cs#L208)
 
 ## 2 Development
 
