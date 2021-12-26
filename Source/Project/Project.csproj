@@ -10,6 +10,7 @@
 		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
 		<Description>Additions and extensions for .NET directory-services protocols.</Description>
 		<FileVersion>$(VersionPrefix).0</FileVersion>
+		<RootNamespace>$(AssemblyName)</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Version>$(VersionPrefix)</Version>
 		<Version Condition="$(VersionPrereleaseName) != ''">$(Version)-$(VersionPrereleaseName)</Version>
