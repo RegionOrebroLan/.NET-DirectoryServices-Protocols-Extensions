@@ -29,6 +29,18 @@ namespace IntegrationTests
 
 		#region Methods
 
+		protected internal virtual LdapConnection CreateLdapConnection()
+		{
+			return new LdapConnection("x500.bund.de")
+			{
+				AuthType = AuthType.Anonymous,
+				SessionOptions =
+				{
+					ProtocolVersion = 3
+				}
+			};
+		}
+
 		[TestMethod]
 		public void Find_Extension_NamedDirectories_Test()
 		{
@@ -36,17 +48,20 @@ namespace IntegrationTests
 
 			Assert.AreEqual(3, directoryDictionary.Count);
 
+			var expectedEntries = this.GetSearchResult(attributeList: "objectClass");
 			var directoryEntry = directoryDictionary.ElementAt(0);
 			Assert.AreEqual("Directory", directoryEntry.Key);
-			Assert.AreEqual(2166, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 
+			expectedEntries = this.GetSearchResult(ldapFilter: "(objectClass=person)", attributeList: "objectClass");
 			directoryEntry = directoryDictionary.ElementAt(1);
 			Assert.AreEqual("Person-directory", directoryEntry.Key);
-			Assert.AreEqual(207, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 
+			expectedEntries = this.GetSearchResult(ldapFilter: "(objectClass=organizationalUnit)", attributeList: "objectClass");
 			directoryEntry = directoryDictionary.ElementAt(2);
 			Assert.AreEqual("Unit-directory", directoryEntry.Key);
-			Assert.AreEqual(1940, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 		}
 
 		[TestMethod]
@@ -56,33 +71,40 @@ namespace IntegrationTests
 
 			Assert.AreEqual(3, directoryDictionary.Count);
 
+			var expectedEntries = this.GetSearchResult(attributeList: "objectClass");
 			var directoryEntry = directoryDictionary.ElementAt(0);
 			Assert.AreEqual("Typed-directory", directoryEntry.Key);
-			Assert.AreEqual(2166, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 
+			expectedEntries = this.GetSearchResult(ldapFilter: "(objectClass=person)", attributeList: "objectClass");
 			directoryEntry = directoryDictionary.ElementAt(1);
 			Assert.AreEqual("Typed-person-directory", directoryEntry.Key);
-			Assert.AreEqual(207, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 
+			expectedEntries = this.GetSearchResult(ldapFilter: "(objectClass=organizationalUnit)", attributeList: "objectClass");
 			directoryEntry = directoryDictionary.ElementAt(2);
 			Assert.AreEqual("Typed-unit-directory", directoryEntry.Key);
-			Assert.AreEqual(1940, directoryEntry.Value.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directoryEntry.Value.Find().Count());
 		}
 
 		[TestMethod]
 		public void Find_Extension_SingleDirectory_Test()
 		{
+			var expectedEntries = this.GetSearchResult(attributeList: "objectClass");
+
 			var directory = this.ServiceProvider.GetRequiredService<IDirectory>();
 
-			Assert.AreEqual(2166, directory.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directory.Find().Count());
 		}
 
 		[TestMethod]
 		public void Find_Extension_SingleTypedDirectory_Test()
 		{
+			var expectedEntries = this.GetSearchResult(attributeList: "objectClass");
+
 			var directory = this.ServiceProvider.GetRequiredService<IDirectory<IEntryMock>>();
 
-			Assert.AreEqual(2166, directory.Find().Count());
+			Assert.AreEqual(expectedEntries.Count, directory.Find().Count());
 		}
 
 		[TestMethod]
@@ -98,7 +120,9 @@ namespace IntegrationTests
 				options.FilterBuilder.Filters.Add("!objectClass=person");
 			}).ToArray();
 
-			Assert.AreEqual(19, entries.Length);
+			var expectedEntries = this.GetSearchResult(ldapFilter: "(&(!objectClass=organizationalUnit)(!objectClass=person))", attributeList: "objectClass");
+
+			Assert.AreEqual(expectedEntries.Count, entries.Length);
 			foreach(var entry in entries)
 			{
 				Assert.AreEqual(1, entry.Attributes.Count);
@@ -125,7 +149,9 @@ namespace IntegrationTests
 				options.FilterBuilder.Filters.Add("!objectClass=person");
 			}).ToArray();
 
-			Assert.AreEqual(19, entries.Length);
+			var expectedEntries = this.GetSearchResult(ldapFilter: "(&(!objectClass=organizationalUnit)(!objectClass=person))", attributeList: "objectClass");
+
+			Assert.AreEqual(expectedEntries.Count, entries.Length);
 			foreach(var entry in entries)
 			{
 				Assert.AreEqual(1, entry.Attributes.Count);
@@ -138,6 +164,39 @@ namespace IntegrationTests
 				Assert.AreEqual(attribute.Count, values.Length);
 				Assert.AreEqual(attribute.Count, entry.ObjectClasses.Count);
 			}
+		}
+
+		protected internal virtual IList<SearchResultEntry> GetSearchResult(string distinguishedName = "o=Bund,c=DE", string ldapFilter = null, SearchScope searchScope = SearchScope.Subtree, params string[] attributeList)
+		{
+			SearchResponse searchResponse = null;
+			var searchResult = new List<SearchResultEntry>();
+
+			using(var ldapConnection = this.CreateLdapConnection())
+			{
+				ldapConnection.SessionOptions.ReferralChasing = ReferralChasingOptions.None;
+
+				var pageResultRequestControl = new PageResultRequestControl(1000);
+
+				var searchRequest = new SearchRequest(distinguishedName, ldapFilter, searchScope, attributeList);
+
+				searchRequest.Controls.Add(pageResultRequestControl);
+
+				while(searchResponse == null || pageResultRequestControl.Cookie.Length > 0)
+				{
+					searchResponse = (SearchResponse)ldapConnection.SendRequest(searchRequest);
+
+					// ReSharper disable PossibleNullReferenceException
+					var pageResultResponseControl = searchResponse.Controls.OfType<PageResultResponseControl>().FirstOrDefault();
+					// ReSharper restore PossibleNullReferenceException
+
+					if(pageResultResponseControl != null)
+						pageResultRequestControl.Cookie = pageResultResponseControl.Cookie;
+
+					searchResult.AddRange(searchResponse.Entries.Cast<SearchResultEntry>());
+				}
+			}
+
+			return searchResult;
 		}
 
 		[ClassInitialize]
@@ -173,10 +232,8 @@ namespace IntegrationTests
 		public void Prerequisite_Test()
 		{
 			// ReSharper disable All
-			using(var ldapConnection = new LdapConnection("x500.bund.de"))
+			using(var ldapConnection = this.CreateLdapConnection())
 			{
-				ldapConnection.AuthType = AuthType.Anonymous;
-				ldapConnection.SessionOptions.ProtocolVersion = 3;
 				var searchRequest = new SearchRequest("o=Bund,c=DE", (string)null, SearchScope.Base);
 				var searchResponse = (SearchResponse)ldapConnection.SendRequest(searchRequest);
 				Assert.AreEqual(1, searchResponse.Entries.Count);
