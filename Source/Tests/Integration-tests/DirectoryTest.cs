@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using IntegrationTests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RegionOrebroLan.DirectoryServices.Protocols;
 using RegionOrebroLan.DirectoryServices.Protocols.DependencyInjection;
 using RegionOrebroLan.DirectoryServices.Protocols.Extensions;
-using RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests.Mocks;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests
+namespace IntegrationTests
 {
 	[TestClass]
 	public class DirectoryTest
@@ -167,6 +169,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests
 		}
 
 		[TestMethod]
+		[SuppressMessage("Style", "IDE0004:Remove Unnecessary Cast")]
 		public void Prerequisite_Test()
 		{
 			// ReSharper disable All
@@ -174,8 +177,8 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests
 			{
 				ldapConnection.AuthType = AuthType.Anonymous;
 				ldapConnection.SessionOptions.ProtocolVersion = 3;
-				var searchRequest = new SearchRequest("o=Bund,c=DE", null, SearchScope.Base);
-				var searchResponse = (SearchResponse) ldapConnection.SendRequest(searchRequest);
+				var searchRequest = new SearchRequest("o=Bund,c=DE", (string)null, SearchScope.Base);
+				var searchResponse = (SearchResponse)ldapConnection.SendRequest(searchRequest);
 				Assert.AreEqual(1, searchResponse.Entries.Count);
 				Assert.AreEqual("o=Bund,c=DE", searchResponse.Entries[0].DistinguishedName);
 				Assert.AreEqual(2, searchResponse.Entries[0].Attributes.Count);

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RegionOrebroLan.DirectoryServices.Protocols;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests.Mocks
+namespace IntegrationTests.Mocks
 {
 	public class EntryMock : Entry, IEntryMock
 	{

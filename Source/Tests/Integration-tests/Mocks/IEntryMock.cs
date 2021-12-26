@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using RegionOrebroLan.DirectoryServices.Protocols;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests.Mocks
+namespace IntegrationTests.Mocks
 {
 	public interface IEntryMock : IEntry
 	{

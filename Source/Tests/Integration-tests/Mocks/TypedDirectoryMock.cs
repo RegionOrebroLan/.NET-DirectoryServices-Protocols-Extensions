@@ -2,9 +2,10 @@ using System;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using RegionOrebroLan.DirectoryServices.Protocols;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests.Mocks
+namespace IntegrationTests.Mocks
 {
 	public class TypedDirectoryMock : Directory<IEntryMock>
 	{
@@ -22,12 +23,12 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests.Mocks
 			if(searchResultEntry == null)
 				throw new ArgumentNullException(nameof(searchResultEntry));
 
-			var entry = new EntryMock {DistinguishedName = searchResultEntry.DistinguishedName};
+			var entry = new EntryMock { DistinguishedName = searchResultEntry.DistinguishedName };
 
 			// ReSharper disable AssignNullToNotNullAttribute
 			foreach(var attributeName in searchResultEntry.Attributes.AttributeNames.Cast<string>())
 			{
-				entry.Attributes.Add(attributeName, (DirectoryAttributeWrapper) searchResultEntry.Attributes[attributeName]);
+				entry.Attributes.Add(attributeName, (DirectoryAttributeWrapper)searchResultEntry.Attributes[attributeName]);
 			}
 			// ReSharper restore AssignNullToNotNullAttribute
 

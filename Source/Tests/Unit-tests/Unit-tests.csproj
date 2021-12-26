@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="Build\Build.props" />
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RootNamespace>UnitTests</RootNamespace>
+		<TargetFrameworks>net462;net5.0;netcoreapp3.1</TargetFrameworks>
 	</PropertyGroup>
-	<Import Project="Build\Build.targets" />
 </Project>

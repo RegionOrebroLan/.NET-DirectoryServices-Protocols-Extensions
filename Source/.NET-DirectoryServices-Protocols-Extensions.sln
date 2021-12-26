@@ -9,13 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{43D62E8E
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysis", "{E2B140BE-56E4-4D82-A011-E1D64F936198}"
-	ProjectSection(SolutionItems) = preProject
-		.Global\CodeAnalysis\All-Rules-As-Error.ruleset = .Global\CodeAnalysis\All-Rules-As-Error.ruleset
-		.Global\CodeAnalysis\Solution-dictionary.xml = .Global\CodeAnalysis\Solution-dictionary.xml
-		.Global\CodeAnalysis\Solution-suppressions.cs = .Global\CodeAnalysis\Solution-suppressions.cs
+		Directory.Version.props = Directory.Version.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{E3F474E2-0E85-47CD-A2DB-55852CEDB670}"
@@ -27,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Settings", "Settings", "{E6
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 		..\.gitignore = ..\.gitignore
-		NuGet.config = NuGet.config
+		..\NuGet.config = ..\NuGet.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Signing", "Signing", "{169D8A5D-6205-40F4-86B6-054AF7BEE7B3}"
@@ -38,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Signing", "Signing", "{169D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD932090-BBDD-468D-990C-4425B779A1FD}"
 	ProjectSection(SolutionItems) = preProject
+		Tests\.editorconfig = Tests\.editorconfig
 		Tests\Directory.Build.props = Tests\Directory.Build.props
 		Tests\Directory.Build.targets = Tests\Directory.Build.targets
 	EndProjectSection
@@ -66,23 +61,17 @@ Global
 		{3ED78059-9F54-4511-8A4F-D0DDF380EC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED78059-9F54-4511-8A4F-D0DDF380EC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED78059-9F54-4511-8A4F-D0DDF380EC0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E347A17-DE18-4A49-8369-772D84229363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E347A17-DE18-4A49-8369-772D84229363}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E347A17-DE18-4A49-8369-772D84229363}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E347A17-DE18-4A49-8369-772D84229363}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{43D62E8E-B7D9-4020-A5CA-3D94D999CD5A} = {11402557-CA24-4A83-BE7F-E88F242BAA07}
-		{E2B140BE-56E4-4D82-A011-E1D64F936198} = {11402557-CA24-4A83-BE7F-E88F242BAA07}
 		{E3F474E2-0E85-47CD-A2DB-55852CEDB670} = {11402557-CA24-4A83-BE7F-E88F242BAA07}
 		{E69917BB-D44E-418E-AE1E-8C62EE842E58} = {11402557-CA24-4A83-BE7F-E88F242BAA07}
 		{169D8A5D-6205-40F4-86B6-054AF7BEE7B3} = {11402557-CA24-4A83-BE7F-E88F242BAA07}
 		{16598E18-E593-4C45-88FA-21A648D2A4A3} = {BD932090-BBDD-468D-990C-4425B779A1FD}
 		{3ED78059-9F54-4511-8A4F-D0DDF380EC0A} = {BD932090-BBDD-468D-990C-4425B779A1FD}
-		{0E347A17-DE18-4A49-8369-772D84229363} = {43E2934C-4627-4DC6-9D59-427D8E309606}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D7A5EBB-83F7-4E96-9BFA-4FC6B4C3856E}

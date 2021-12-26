@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.IntegrationTests
+namespace IntegrationTests
 {
 	[TestClass]
 	[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]

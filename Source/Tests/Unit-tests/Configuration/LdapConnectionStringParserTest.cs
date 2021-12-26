@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;
 
-namespace RegionOrebroLan.DirectoryServices.Protocols.UnitTests.Configuration
+namespace UnitTests.Configuration
 {
 	[TestClass]
 	public class LdapConnectionStringParserTest
