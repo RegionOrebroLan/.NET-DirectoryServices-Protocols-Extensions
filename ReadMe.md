@@ -23,4 +23,4 @@ Your company may lock traffic to ldap-ports 389 and 636.
 
 ## 3 Information
 
-- [Introduction to System.DirectoryServices.Protocols (S.DS.P)](https://docs.microsoft.com/en-us/previous-versions/dotnet/articles/bb332056(v=msdn.10))
+- [Introduction to System.DirectoryServices.Protocols (S.DS.P)](https://docs.microsoft.com/en-us/previous-versions/dotnet/articles/bb332056%28v=msdn.10%29)
