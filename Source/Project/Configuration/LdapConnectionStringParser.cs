@@ -148,7 +148,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 			if(dictionary.ContainsKey(key))
 			{
-				ldapConnectionOptions.AuthenticationType = (AuthType) Enum.Parse(typeof(AuthType), dictionary[key], true);
+				ldapConnectionOptions.AuthenticationType = (AuthType)Enum.Parse(typeof(AuthType), dictionary[key], true);
 				dictionary.Remove(key);
 			}
 
@@ -212,7 +212,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 			{
 				foreach(var keyValuePair in value.Trim().Split(';').Select(keyValuePair => keyValuePair.Trim()).Where(keyValuePair => !string.IsNullOrWhiteSpace(keyValuePair)))
 				{
-					var parts = keyValuePair.Split(new[] {'='}, 2).Select(part => part.Trim()).ToArray();
+					var parts = keyValuePair.Split(new[] { '=' }, 2).Select(part => part.Trim()).ToArray();
 					dictionary.Add(parts[0], parts[1]);
 				}
 			}

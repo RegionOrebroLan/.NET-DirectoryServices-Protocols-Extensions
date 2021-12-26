@@ -26,12 +26,12 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 			if(searchResultEntry == null)
 				throw new ArgumentNullException(nameof(searchResultEntry));
 
-			var entry = new Entry {DistinguishedName = searchResultEntry.DistinguishedName};
+			var entry = new Entry { DistinguishedName = searchResultEntry.DistinguishedName };
 
 			// ReSharper disable AssignNullToNotNullAttribute
 			foreach(var attributeName in searchResultEntry.Attributes.AttributeNames.Cast<string>())
 			{
-				entry.Attributes.Add(attributeName, (DirectoryAttributeWrapper) searchResultEntry.Attributes[attributeName]);
+				entry.Attributes.Add(attributeName, (DirectoryAttributeWrapper)searchResultEntry.Attributes[attributeName]);
 			}
 			// ReSharper restore AssignNullToNotNullAttribute
 
@@ -165,7 +165,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 
 				while(searchResponse == null || pageResultRequestControl.Cookie.Length > 0)
 				{
-					searchResponse = (SearchResponse) connection.SendRequest(searchRequest);
+					searchResponse = (SearchResponse)connection.SendRequest(searchRequest);
 
 					// ReSharper disable PossibleNullReferenceException
 					var pageResultResponseControl = searchResponse.Controls.OfType<PageResultResponseControl>().FirstOrDefault();
@@ -179,7 +179,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 			}
 			else
 			{
-				searchResponse = (SearchResponse) connection.SendRequest(searchRequest);
+				searchResponse = (SearchResponse)connection.SendRequest(searchRequest);
 
 				// ReSharper disable PossibleNullReferenceException
 				searchResult.AddRange(searchResponse.Entries.Cast<SearchResultEntry>());

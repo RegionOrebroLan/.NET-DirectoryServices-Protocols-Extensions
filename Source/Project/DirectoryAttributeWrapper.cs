@@ -29,9 +29,9 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 
 		public virtual int Count => this.DirectoryAttribute.Count;
 		protected internal virtual DirectoryAttribute DirectoryAttribute { get; }
-		public virtual bool IsFixedSize => ((IList) this.DirectoryAttribute).IsFixedSize;
-		public virtual bool IsReadOnly => ((IList) this.DirectoryAttribute).IsReadOnly;
-		public virtual bool IsSynchronized => ((IList) this.DirectoryAttribute).IsSynchronized;
+		public virtual bool IsFixedSize => ((IList)this.DirectoryAttribute).IsFixedSize;
+		public virtual bool IsReadOnly => ((IList)this.DirectoryAttribute).IsReadOnly;
+		public virtual bool IsSynchronized => ((IList)this.DirectoryAttribute).IsSynchronized;
 
 		public virtual object this[int index]
 		{
@@ -45,7 +45,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 			set => this.DirectoryAttribute.Name = value;
 		}
 
-		public virtual object SyncRoot => ((IList) this.DirectoryAttribute).SyncRoot;
+		public virtual object SyncRoot => ((IList)this.DirectoryAttribute).SyncRoot;
 
 		#endregion
 
@@ -68,7 +68,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 
 		public virtual int Add(object value)
 		{
-			return ((IList) this.DirectoryAttribute).Add(value);
+			return ((IList)this.DirectoryAttribute).Add(value);
 		}
 
 		public virtual void AddRange(IEnumerable<object> values)
@@ -92,7 +92,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 
 		public virtual void CopyTo(Array array, int index)
 		{
-			((IList) this.DirectoryAttribute).CopyTo(array, index);
+			((IList)this.DirectoryAttribute).CopyTo(array, index);
 		}
 
 		public virtual void CopyTo(object[] array, int index)
@@ -127,7 +127,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 
 		public virtual void Insert(int index, object value)
 		{
-			((IList) this.DirectoryAttribute).Insert(index, value);
+			((IList)this.DirectoryAttribute).Insert(index, value);
 		}
 
 		public virtual void Insert(int index, IEnumerable<byte> value)
