@@ -27,7 +27,7 @@ namespace IntegrationTests
 
 		#region Properties
 
-		public static IConfiguration Configuration => _configuration ??= CreateConfiguration("AppSettings.json");
+		public static IConfiguration Configuration => _configuration ??= CreateConfiguration("appsettings.json");
 		public static IHostEnvironment HostEnvironment => _hostEnvironment ??= CreateHostEnvironment("Integration-tests");
 
 		#endregion
