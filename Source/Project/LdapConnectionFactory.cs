@@ -12,18 +12,18 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 		#region Constructors
 
 		[CLSCompliant(false)]
-		public LdapConnectionFactory(IOptions<LdapConnectionOptions> options)
-		{
-			if(options == null)
-				throw new ArgumentNullException(nameof(options));
-
-			this.OptionsFunction = () => options.Value;
-		}
-
-		[CLSCompliant(false)]
 		public LdapConnectionFactory(Func<LdapConnectionOptions> optionsFunction)
 		{
 			this.OptionsFunction = optionsFunction ?? throw new ArgumentNullException(nameof(optionsFunction));
+		}
+
+		[CLSCompliant(false)]
+		public LdapConnectionFactory(IOptionsMonitor<LdapConnectionOptions> optionsMonitor)
+		{
+			if(optionsMonitor == null)
+				throw new ArgumentNullException(nameof(optionsMonitor));
+
+			this.OptionsFunction = () => optionsMonitor.CurrentValue;
 		}
 
 		#endregion
