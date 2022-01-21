@@ -12,7 +12,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 	{
 		#region Fields
 
-		private static readonly ConcurrentDictionary<FilterOperator, string> _operatorValueCache = new ConcurrentDictionary<FilterOperator, string>();
+		private static readonly ConcurrentDictionary<FilterOperator, string> _operatorValueCache = new();
 
 		#endregion
 
