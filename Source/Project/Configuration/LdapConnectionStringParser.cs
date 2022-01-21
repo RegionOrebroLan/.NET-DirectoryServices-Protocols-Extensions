@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Globalization;
 using System.Linq;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 {
-	public class LdapConnectionStringParser
+	[ServiceConfiguration(ServiceType = typeof(IParser<LdapConnectionOptions>))]
+	public class LdapConnectionStringParser : BasicParser<LdapConnectionOptions>
 	{
 		#region Methods
 
@@ -181,7 +183,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 			return ldapConnectionOptions;
 		}
 
-		public virtual LdapConnectionOptions Parse(string value)
+		public override LdapConnectionOptions Parse(string value)
 		{
 			if(value == null)
 				return null;

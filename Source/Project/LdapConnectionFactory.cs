@@ -3,10 +3,12 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Options;
+using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;
 
 namespace RegionOrebroLan.DirectoryServices.Protocols
 {
+	[ServiceConfiguration(ServiceType = typeof(ILdapConnectionFactory))]
 	public class LdapConnectionFactory : ILdapConnectionFactory
 	{
 		#region Constructors
