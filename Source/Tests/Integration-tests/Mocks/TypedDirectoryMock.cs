@@ -11,8 +11,8 @@ namespace IntegrationTests.Mocks
 	{
 		#region Constructors
 
-		public TypedDirectoryMock(ILdapConnectionFactory connectionFactory, IOptions<DirectoryOptions> options) : base(connectionFactory, options) { }
 		public TypedDirectoryMock(ILdapConnectionFactory connectionFactory, Func<DirectoryOptions> optionsFunction) : base(connectionFactory, optionsFunction) { }
+		public TypedDirectoryMock(ILdapConnectionFactory connectionFactory, IOptionsMonitor<DirectoryOptions> optionsMonitor) : base(connectionFactory, optionsMonitor) { }
 
 		#endregion
 

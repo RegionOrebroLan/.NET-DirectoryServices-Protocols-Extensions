@@ -12,10 +12,10 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 		#region Constructors
 
 		[CLSCompliant(false)]
-		public Directory(ILdapConnectionFactory connectionFactory, IOptions<DirectoryOptions> options) : base(connectionFactory, options) { }
+		public Directory(ILdapConnectionFactory connectionFactory, Func<DirectoryOptions> optionsFunction) : base(connectionFactory, optionsFunction) { }
 
 		[CLSCompliant(false)]
-		public Directory(ILdapConnectionFactory connectionFactory, Func<DirectoryOptions> optionsFunction) : base(connectionFactory, optionsFunction) { }
+		public Directory(ILdapConnectionFactory connectionFactory, IOptionsMonitor<DirectoryOptions> optionsMonitor) : base(connectionFactory, optionsMonitor) { }
 
 		#endregion
 
@@ -51,18 +51,18 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 		}
 
 		[CLSCompliant(false)]
-		protected Directory(ILdapConnectionFactory connectionFactory, IOptions<DirectoryOptions> options) : this(connectionFactory)
-		{
-			if(options == null)
-				throw new ArgumentNullException(nameof(options));
-
-			this.OptionsFunction = () => options.Value;
-		}
-
-		[CLSCompliant(false)]
 		protected Directory(ILdapConnectionFactory connectionFactory, Func<DirectoryOptions> optionsFunction) : this(connectionFactory)
 		{
 			this.OptionsFunction = optionsFunction ?? throw new ArgumentNullException(nameof(optionsFunction));
+		}
+
+		[CLSCompliant(false)]
+		protected Directory(ILdapConnectionFactory connectionFactory, IOptionsMonitor<DirectoryOptions> optionsMonitor) : this(connectionFactory)
+		{
+			if(optionsMonitor == null)
+				throw new ArgumentNullException(nameof(optionsMonitor));
+
+			this.OptionsFunction = () => optionsMonitor.CurrentValue;
 		}
 
 		#endregion
