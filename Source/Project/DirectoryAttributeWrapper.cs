@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 
 namespace RegionOrebroLan.DirectoryServices.Protocols
 {
-	[SuppressMessage("Design", "CA1010:Generic interface should also be implemented")]
 	public class DirectoryAttributeWrapper(DirectoryAttribute directoryAttribute) : IDirectoryAttribute
 	{
 		#region Properties
