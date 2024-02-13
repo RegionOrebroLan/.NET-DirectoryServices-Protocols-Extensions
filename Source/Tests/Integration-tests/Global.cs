@@ -41,7 +41,7 @@ namespace IntegrationTests
 		{
 			var configurationBuilder = CreateConfigurationBuilder();
 
-			foreach(var path in jsonFilePaths ?? Array.Empty<string>())
+			foreach(var path in jsonFilePaths ?? [])
 			{
 				configurationBuilder.AddJsonFile(path, true, true);
 			}
