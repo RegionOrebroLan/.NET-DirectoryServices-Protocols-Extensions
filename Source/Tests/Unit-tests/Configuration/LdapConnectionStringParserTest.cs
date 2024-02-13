@@ -46,6 +46,23 @@ namespace UnitTests.Configuration
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void Parse_IfValueContainsServerAndServerDelimiter_ShouldThrowAnInvalidOperationException()
+		{
+			const string value = "Server=example.org;ServerDelimiter=|";
+
+			try
+			{
+				new LdapConnectionStringParser().Parse(value);
+			}
+			catch(InvalidOperationException invalidOperationException)
+			{
+				if(invalidOperationException.Message.Equals($"Could not parse the value \"{value}\" to ldap-connection-options.", StringComparison.OrdinalIgnoreCase) && invalidOperationException.InnerException != null && invalidOperationException.InnerException.Message.Equals("The following keys/properties are not allowed: ServerDelimiter", StringComparison.OrdinalIgnoreCase))
+					throw;
+			}
+		}
+
+		[TestMethod]
 		public void Parse_IfValueHasOnlyEmpty_ShouldReturnALdapConnectionOptionsInstanceWithoutPropertiesSet()
 		{
 			var ldapConnectionOptions = new LdapConnectionStringParser().Parse(" ;;  ;");
@@ -85,6 +102,17 @@ namespace UnitTests.Configuration
 			Assert.IsNull(ldapConnectionOptions.DirectoryIdentifier);
 			Assert.IsNull(ldapConnectionOptions.ProtocolVersion);
 			Assert.IsNull(ldapConnectionOptions.Timeout);
+		}
+
+		[TestMethod]
+		public void Parse_ServerDelimiter_Test()
+		{
+			var ldapConnectionOptions = new LdapConnectionStringParser().Parse("ServerDelimiter=|;Servers=dc-01.example.org|dc-02.example.org|dc-03.example.org");
+			Assert.IsNotNull(ldapConnectionOptions);
+			Assert.AreEqual(3, ldapConnectionOptions.DirectoryIdentifier.Servers.Count);
+			Assert.AreEqual("dc-01.example.org", ldapConnectionOptions.DirectoryIdentifier.Servers.First());
+			Assert.AreEqual("dc-02.example.org", ldapConnectionOptions.DirectoryIdentifier.Servers[1]);
+			Assert.AreEqual("dc-03.example.org", ldapConnectionOptions.DirectoryIdentifier.Servers.Last());
 		}
 
 		[TestMethod]

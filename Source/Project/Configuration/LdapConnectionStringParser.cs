@@ -113,13 +113,29 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 			}
 			else
 			{
+				var serverDelimiter = ',';
+
+				key = "ServerDelimiter";
+
+				if(dictionary.ContainsKey(key))
+				{
+					var serverDelimiterString = dictionary[key];
+
+					if(serverDelimiterString == null || serverDelimiterString.Length != 1)
+						throw new InvalidOperationException("The value for the key \"ServerDelimiter\" must be one character.");
+
+					serverDelimiter = serverDelimiterString[0];
+
+					dictionary.Remove(key);
+				}
+
 				key = nameof(DirectoryIdentifierOptions.Servers);
 
 				if(dictionary.ContainsKey(key))
 				{
 					directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
-					foreach(var server in dictionary[key].Split(',').Select(server => server.Trim()).Where(server => !string.IsNullOrWhiteSpace(server)))
+					foreach(var server in dictionary[key].Split(serverDelimiter).Select(server => server.Trim()).Where(server => !string.IsNullOrWhiteSpace(server)))
 					{
 						directoryIdentifierOptions.Servers.Add(server);
 					}
