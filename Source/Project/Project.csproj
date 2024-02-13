@@ -21,9 +21,9 @@
 		<InternalsVisibleTo Include="Unit-tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001005104e2e536d2ee16bbe48ffdb761ea502ba1cba376767673e96972689e7247ecd6df116e5e1fafa1b36caa5267ce4d76c3d05225f55dc8582ddb2b948da959cb56a5fdf0417eee6859bbb2fbe0dfc1a12ca901d0ecc678044649d9dd20653b08deaedc448608e94c34955d519b1f2a6339ff19bbfb339d4df11bdcec3f8fa4a3" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
 		<PackageReference Include="RegionOrebroLan.DirectoryServices" Version="0.1.0-alpha" />
-		<PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.0" />
+		<PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.0" />
 	</ItemGroup>
 	<Target Name="HandleAssemblyOriginatorKeyFile" BeforeTargets="BeforeBuild" Condition="$(SignAssembly) AND !Exists('$(AssemblyOriginatorKeyFile)')">
 		<PropertyGroup>

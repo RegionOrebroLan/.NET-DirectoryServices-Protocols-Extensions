@@ -12,7 +12,7 @@
 		<NoWarn>$(NoWarn);CS1591</NoWarn>
 		<!--<Nullable>enable</Nullable>-->
 		<SignAssembly>true</SignAssembly>
-		<!--<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>-->
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 </Project>
