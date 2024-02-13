@@ -1,6 +1,4 @@
-using System;
 using System.DirectoryServices.Protocols;
-using System.Linq;
 using Microsoft.Extensions.Options;
 using RegionOrebroLan.DirectoryServices.Protocols;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;

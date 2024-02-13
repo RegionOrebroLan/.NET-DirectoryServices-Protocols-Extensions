@@ -1,6 +1,4 @@
-using System;
 using System.DirectoryServices.Protocols;
-using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Options;
 using RegionOrebroLan.DependencyInjection;

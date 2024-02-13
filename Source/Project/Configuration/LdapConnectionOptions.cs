@@ -1,4 +1,3 @@
-using System;
 using System.DirectoryServices.Protocols;
 
 namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration

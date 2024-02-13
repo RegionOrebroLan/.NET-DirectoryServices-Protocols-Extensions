@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using System.Linq;
 using IntegrationTests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

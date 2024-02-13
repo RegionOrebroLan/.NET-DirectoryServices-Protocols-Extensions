@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace RegionOrebroLan.DirectoryServices.Protocols.Extensions
 {
 	public static class DirectoryExtension

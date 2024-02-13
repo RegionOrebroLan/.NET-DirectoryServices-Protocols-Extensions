@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace RegionOrebroLan.DirectoryServices.Protocols
 {
 	public class Entry : IEntry

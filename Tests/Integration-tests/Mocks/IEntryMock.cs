@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RegionOrebroLan.DirectoryServices.Protocols;
 
 namespace IntegrationTests.Mocks
