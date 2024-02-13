@@ -36,8 +36,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 			// ReSharper disable All
 			if(dictionary.ContainsKey(key))
 			{
-				if(credentialOptions == null)
-					credentialOptions = new CredentialOptions();
+				credentialOptions ??= new CredentialOptions();
 
 				credentialOptions.UserName = dictionary[key];
 
@@ -73,8 +72,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 			if(dictionary.ContainsKey(key))
 			{
-				if(directoryIdentifierOptions == null)
-					directoryIdentifierOptions = new DirectoryIdentifierOptions();
+				directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
 				directoryIdentifierOptions.FullyQualifiedDnsHostName = bool.Parse(dictionary[key]);
 
@@ -85,8 +83,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 			if(dictionary.ContainsKey(key))
 			{
-				if(directoryIdentifierOptions == null)
-					directoryIdentifierOptions = new DirectoryIdentifierOptions();
+				directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
 				directoryIdentifierOptions.FullyQualifiedDnsHostName = bool.Parse(dictionary[key]);
 
@@ -97,8 +94,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 			if(dictionary.ContainsKey(key))
 			{
-				if(directoryIdentifierOptions == null)
-					directoryIdentifierOptions = new DirectoryIdentifierOptions();
+				directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
 				directoryIdentifierOptions.Port = int.Parse(dictionary[key], CultureInfo.InvariantCulture);
 
@@ -109,8 +105,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 			if(dictionary.ContainsKey(key))
 			{
-				if(directoryIdentifierOptions == null)
-					directoryIdentifierOptions = new DirectoryIdentifierOptions();
+				directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
 				directoryIdentifierOptions.Servers.Add(dictionary[key]);
 
@@ -122,8 +117,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols.Configuration
 
 				if(dictionary.ContainsKey(key))
 				{
-					if(directoryIdentifierOptions == null)
-						directoryIdentifierOptions = new DirectoryIdentifierOptions();
+					directoryIdentifierOptions ??= new DirectoryIdentifierOptions();
 
 					foreach(var server in dictionary[key].Split(',').Select(server => server.Trim()).Where(server => !string.IsNullOrWhiteSpace(server)))
 					{
