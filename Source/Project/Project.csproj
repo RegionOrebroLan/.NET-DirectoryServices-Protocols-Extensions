@@ -1,28 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup Label="Initial">
-		<Company>Region Örebro län</Company>
-		<VersionPrefix>0.2.0</VersionPrefix>
-		<VersionPrereleaseName>alpha</VersionPrereleaseName>
-	</PropertyGroup>
-	<PropertyGroup Label="Assembly">
+	<PropertyGroup>
 		<AssemblyName>RegionOrebroLan.DirectoryServices.Protocols</AssemblyName>
-		<AssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.snk</AssemblyOriginatorKeyFile>
-		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+		<AssemblyOriginatorKeyFile>$(SolutionDir)StrongName.snk</AssemblyOriginatorKeyFile>
+		<Authors>Region Örebro län</Authors>
+		<Company>$(Authors)</Company>
+		<Copyright>Copyright (c) 2020 $(Company)</Copyright>
 		<Description>Additions and extensions for .NET directory-services protocols.</Description>
-		<FileVersion>$(VersionPrefix).0</FileVersion>
-		<RootNamespace>$(AssemblyName)</RootNamespace>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<Version>$(VersionPrefix)</Version>
-		<Version Condition="$(VersionPrereleaseName) != ''">$(Version)-$(VersionPrereleaseName)</Version>
-	</PropertyGroup>
-	<PropertyGroup Label="NuGet-Package">
-		<Authors>$(Company)</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/RegionOrebroLan/.NET-DirectoryServices-Protocols-Extensions/</PackageProjectUrl>
 		<PackageReleaseNotes>https://github.com/RegionOrebroLan/.NET-DirectoryServices-Protocols-Extensions/releases/</PackageReleaseNotes>
 		<PackageTags></PackageTags>
+		<RootNamespace>$(AssemblyName)</RootNamespace>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<VersionPrefix>0.2.0</VersionPrefix>
+		<VersionSuffix>alpha</VersionSuffix>
 	</PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Integration-tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001005104e2e536d2ee16bbe48ffdb761ea502ba1cba376767673e96972689e7247ecd6df116e5e1fafa1b36caa5267ce4d76c3d05225f55dc8582ddb2b948da959cb56a5fdf0417eee6859bbb2fbe0dfc1a12ca901d0ecc678044649d9dd20653b08deaedc448608e94c34955d519b1f2a6339ff19bbfb339d4df11bdcec3f8fa4a3" />
+		<InternalsVisibleTo Include="Unit-tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001005104e2e536d2ee16bbe48ffdb761ea502ba1cba376767673e96972689e7247ecd6df116e5e1fafa1b36caa5267ce4d76c3d05225f55dc8582ddb2b948da959cb56a5fdf0417eee6859bbb2fbe0dfc1a12ca901d0ecc678044649d9dd20653b08deaedc448608e94c34955d519b1f2a6339ff19bbfb339d4df11bdcec3f8fa4a3" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
 		<PackageReference Include="RegionOrebroLan.DirectoryServices" Version="0.1.0-alpha" />
@@ -30,7 +27,7 @@
 	</ItemGroup>
 	<Target Name="HandleAssemblyOriginatorKeyFile" BeforeTargets="BeforeBuild" Condition="$(SignAssembly) AND !Exists('$(AssemblyOriginatorKeyFile)')">
 		<PropertyGroup>
-			<_DevelopmentAssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.Development.snk</_DevelopmentAssemblyOriginatorKeyFile>
+			<_DevelopmentAssemblyOriginatorKeyFile>$(SolutionDir)StrongName.Development.snk</_DevelopmentAssemblyOriginatorKeyFile>
 		</PropertyGroup>
 		<Warning Text="The strong-name-key-file '$(AssemblyOriginatorKeyFile)' does not exist. The strong-name-key-file '$(_DevelopmentAssemblyOriginatorKeyFile)' is used instead." />
 		<PropertyGroup>

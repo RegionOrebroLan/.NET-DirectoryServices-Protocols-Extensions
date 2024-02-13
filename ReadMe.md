@@ -21,6 +21,10 @@ The integration-tests uses a public ldap-server "x500.bund.de". You may need to 
 
 Your company may lock traffic to ldap-ports 389 and 636.
 
+### 2.2 Signing
+
+Drop the "StrongName.snk" file in the repository-root. The file should not be included in source control.
+
 ## 3 Information
 
 - [Introduction to System.DirectoryServices.Protocols (S.DS.P)](https://docs.microsoft.com/en-us/previous-versions/dotnet/articles/bb332056%28v=msdn.10%29)

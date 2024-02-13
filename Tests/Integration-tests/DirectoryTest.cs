@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using IntegrationTests.Mocks;
@@ -228,7 +227,6 @@ namespace IntegrationTests
 		}
 
 		[TestMethod]
-		[SuppressMessage("Style", "IDE0004:Remove Unnecessary Cast")]
 		public void Prerequisite_Test()
 		{
 			// ReSharper disable All

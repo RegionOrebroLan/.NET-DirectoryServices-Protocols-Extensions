@@ -1,4 +1,0 @@
-[*.cs]
-# Suppress
-dotnet_diagnostic.CA1416.severity = none
-dotnet_diagnostic.CA1707.severity = none

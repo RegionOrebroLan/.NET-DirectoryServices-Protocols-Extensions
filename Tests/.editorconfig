@@ -1,0 +1,9 @@
+[*.cs]
+# Suppress
+dotnet_diagnostic.CA1416.severity = none
+dotnet_diagnostic.CA1510.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1860.severity = none
+
+[/Integration-tests/DirectoryTest.cs]
+dotnet_diagnostic.IDE0004.severity = none
