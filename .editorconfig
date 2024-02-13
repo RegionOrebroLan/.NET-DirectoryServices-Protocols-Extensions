@@ -34,7 +34,6 @@ dotnet_diagnostic.IDE0063.severity = none
 dotnet_diagnostic.IDE0305.severity = none
 
 # Temporary
-dotnet_diagnostic.IDE0290.severity = none
 dotnet_diagnostic.IDE0300.severity = none
 
 # Visual Studio

@@ -8,17 +8,8 @@ using System.Linq;
 namespace RegionOrebroLan.DirectoryServices.Protocols
 {
 	[SuppressMessage("Design", "CA1010:Generic interface should also be implemented")]
-	public class DirectoryAttributeWrapper : IDirectoryAttribute
+	public class DirectoryAttributeWrapper(DirectoryAttribute directoryAttribute) : IDirectoryAttribute
 	{
-		#region Constructors
-
-		public DirectoryAttributeWrapper(DirectoryAttribute directoryAttribute)
-		{
-			this.DirectoryAttribute = directoryAttribute ?? throw new ArgumentNullException(nameof(directoryAttribute));
-		}
-
-		#endregion
-
 		#region Properties
 
 		public virtual int Capacity
@@ -28,7 +19,7 @@ namespace RegionOrebroLan.DirectoryServices.Protocols
 		}
 
 		public virtual int Count => this.DirectoryAttribute.Count;
-		protected internal virtual DirectoryAttribute DirectoryAttribute { get; }
+		protected internal virtual DirectoryAttribute DirectoryAttribute { get; } = directoryAttribute ?? throw new ArgumentNullException(nameof(directoryAttribute));
 		public virtual bool IsFixedSize => ((IList)this.DirectoryAttribute).IsFixedSize;
 		public virtual bool IsReadOnly => ((IList)this.DirectoryAttribute).IsReadOnly;
 		public virtual bool IsSynchronized => ((IList)this.DirectoryAttribute).IsSynchronized;
