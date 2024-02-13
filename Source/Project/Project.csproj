@@ -23,7 +23,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
 		<PackageReference Include="RegionOrebroLan.DirectoryServices" Version="0.1.0-alpha" />
-		<PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.0" />
+		<PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.2" />
 	</ItemGroup>
 	<Target Name="HandleAssemblyOriginatorKeyFile" BeforeTargets="BeforeBuild" Condition="$(SignAssembly) AND !Exists('$(AssemblyOriginatorKeyFile)')">
 		<PropertyGroup>
