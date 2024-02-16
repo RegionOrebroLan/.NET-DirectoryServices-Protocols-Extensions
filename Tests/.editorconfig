@@ -1,3 +1,2 @@
 [*.cs]
-dotnet_diagnostic.CA1416.severity = none # Temporary
 dotnet_diagnostic.CA1707.severity = none
