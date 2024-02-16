@@ -103,6 +103,7 @@ namespace UnitTests
 				Assert.False(connection.SessionOptions.RootDseCache);
 				Assert.True(connection.SessionOptions.Sealing);
 				// connection.SessionOptions.SecureSocketLayer will return false even if it is set to true. Something else is set by it, but I don't know what.
+				Assert.True(options!.Session.SecureSocketLayer);
 				Assert.False(connection.SessionOptions.SecureSocketLayer);
 				Assert.False(connection.SessionOptions.Signing);
 				Assert.Equal(20, connection.SessionOptions.SspiFlag);
