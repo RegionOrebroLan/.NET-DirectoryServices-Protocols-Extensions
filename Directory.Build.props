@@ -10,7 +10,7 @@
 		<LangVersion>latest</LangVersion>
 		<!-- Below is for the same workaround as above. -->
 		<NoWarn>$(NoWarn);CS1591</NoWarn>
-		<!--<Nullable>enable</Nullable>-->
+		<Nullable>enable</Nullable>
 		<SignAssembly>true</SignAssembly>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>

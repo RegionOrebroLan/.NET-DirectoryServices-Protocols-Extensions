@@ -1,25 +1,19 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 
 namespace IntegrationTests
 {
-	[TestClass]
-	[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords")]
 	public static class Global
 	{
 		#region Fields
 
-		private static IConfiguration _configuration;
-		private static IHostEnvironment _hostEnvironment;
-
-		// ReSharper disable PossibleNullReferenceException
-		public static readonly string ProjectDirectoryPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
-		// ReSharper restore PossibleNullReferenceException
+		private static IConfiguration? _configuration;
+		private static IHostEnvironment? _hostEnvironment;
+		public static readonly DirectoryInfo ProjectDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent!.Parent!.Parent!;
 
 		#endregion
 
@@ -32,17 +26,17 @@ namespace IntegrationTests
 
 		#region Methods
 
-		[AssemblyCleanup]
-		public static void Cleanup() { }
-
 		public static IConfiguration CreateConfiguration(params string[] jsonFilePaths)
 		{
 			var configurationBuilder = CreateConfigurationBuilder();
 
-			foreach(var path in jsonFilePaths ?? [])
+			foreach(var path in jsonFilePaths)
 			{
 				configurationBuilder.AddJsonFile(path, true, true);
 			}
+
+			configurationBuilder.AddUserSecrets(typeof(Global).Assembly);
+			configurationBuilder.AddEnvironmentVariables();
 
 			return configurationBuilder.Build();
 		}
@@ -58,9 +52,9 @@ namespace IntegrationTests
 		{
 			return new HostingEnvironment
 			{
-				ApplicationName = typeof(Global).Assembly.GetName().Name,
-				ContentRootFileProvider = new PhysicalFileProvider(ProjectDirectoryPath),
-				ContentRootPath = ProjectDirectoryPath,
+				ApplicationName = typeof(Global).Assembly.GetName().Name!,
+				ContentRootFileProvider = new PhysicalFileProvider(ProjectDirectory.FullName),
+				ContentRootPath = ProjectDirectory.FullName,
 				EnvironmentName = environmentName
 			};
 		}
@@ -76,16 +70,9 @@ namespace IntegrationTests
 
 			services.AddSingleton(configuration);
 			services.AddSingleton(HostEnvironment);
-			//services.AddSingleton<ILoggerFactory, LoggerFactoryMock>();
+			services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
 			return services;
-		}
-
-		[AssemblyInitialize]
-		public static void Initialize(TestContext testContext)
-		{
-			if(testContext == null)
-				throw new ArgumentNullException(nameof(testContext));
 		}
 
 		#endregion

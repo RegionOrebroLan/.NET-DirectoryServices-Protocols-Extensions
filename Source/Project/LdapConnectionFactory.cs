@@ -1,85 +1,150 @@
 using System.DirectoryServices.Protocols;
 using System.Net;
-using Microsoft.Extensions.Options;
-using RegionOrebroLan.DependencyInjection;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;
+using LdapSessionOptions = RegionOrebroLan.DirectoryServices.Protocols.Configuration.LdapSessionOptions;
 
 namespace RegionOrebroLan.DirectoryServices.Protocols
 {
-	[ServiceConfiguration(ServiceType = typeof(ILdapConnectionFactory))]
 	public class LdapConnectionFactory : ILdapConnectionFactory
 	{
-		#region Constructors
-
-		[CLSCompliant(false)]
-		public LdapConnectionFactory(Func<LdapConnectionOptions> optionsFunction)
-		{
-			this.OptionsFunction = optionsFunction ?? throw new ArgumentNullException(nameof(optionsFunction));
-		}
-
-		[CLSCompliant(false)]
-		public LdapConnectionFactory(IOptionsMonitor<LdapConnectionOptions> optionsMonitor)
-		{
-			if(optionsMonitor == null)
-				throw new ArgumentNullException(nameof(optionsMonitor));
-
-			this.OptionsFunction = () => optionsMonitor.CurrentValue;
-		}
-
-		#endregion
-
-		#region Properties
-
-		protected internal virtual LdapDirectoryIdentifier DefaultLdapDirectoryIdentifier { get; } = new LdapDirectoryIdentifier("Server");
-
-		[CLSCompliant(false)]
-		protected internal virtual Func<LdapConnectionOptions> OptionsFunction { get; }
-
-		protected internal virtual int ProtocolVersion => 3;
-
-		#endregion
-
 		#region Methods
 
-		public virtual LdapConnection Create()
+		public virtual LdapConnection Create(LdapConnectionOptions options)
 		{
-			var options = this.OptionsFunction();
+			if(options == null)
+				throw new ArgumentNullException(nameof(options));
 
-			var ldapDirectoryIdentifier = this.CreateLdapDirectoryIdentifier(options.DirectoryIdentifier);
-			var networkCredential = this.CreateNetworkCredential(options.Credential);
-
-			using(var defaultLdapConnection = new LdapConnection("Server"))
+			using(var defaultConnection = new LdapConnection("Server"))
 			{
-				var ldapConnection = new LdapConnection(ldapDirectoryIdentifier, networkCredential, options.AuthenticationType ?? defaultLdapConnection.AuthType);
+				var defaultIdentifier = defaultConnection.Directory as LdapDirectoryIdentifier;
 
-				ldapConnection.SessionOptions.ProtocolVersion = options.ProtocolVersion ?? this.ProtocolVersion;
+				var identifier = this.CreateIdentifier(defaultIdentifier, options.Identifier);
+
+				var connection = new LdapConnection(identifier);
+
+				if(options.AuthenticationType != null)
+					connection.AuthType = options.AuthenticationType.Value;
+
+				if(options.AutomaticBind != null)
+					connection.AutoBind = options.AutomaticBind.Value;
+
+				if(connection.AuthType != AuthType.Anonymous)
+				{
+					var credential = this.CreateCredential(options.Credential);
+					connection.Credential = credential;
+				}
+
+				this.SetSession(connection, options.Session);
 
 				if(options.Timeout != null)
-					ldapConnection.Timeout = options.Timeout.Value;
+					connection.Timeout = options.Timeout.Value;
 
-				return ldapConnection;
+				return connection;
 			}
 		}
 
-		protected internal virtual LdapDirectoryIdentifier CreateLdapDirectoryIdentifier(DirectoryIdentifierOptions options)
+		protected internal virtual NetworkCredential CreateCredential(NetworkCredentialOptions options)
 		{
-			return options != null
-				? new LdapDirectoryIdentifier(
-					options.Servers.ToArray(),
-					options.Port ?? this.DefaultLdapDirectoryIdentifier.PortNumber,
-					options.FullyQualifiedDnsHostName ?? this.DefaultLdapDirectoryIdentifier.FullyQualifiedDnsHostName,
-					options.Connectionless ?? this.DefaultLdapDirectoryIdentifier.Connectionless)
-				: null;
+			if(options == null)
+				throw new ArgumentNullException(nameof(options));
+
+			if(options.JoinDomainAndUserName != null && options.JoinDomainAndUserName.Value)
+			{
+				var userName = options.UserName;
+
+				if(!string.IsNullOrEmpty(options.Domain))
+					userName = options.Domain + @"\" + userName;
+
+				return new NetworkCredential(userName, options.Password);
+			}
+
+			return new NetworkCredential(options.UserName, options.Password, options.Domain);
 		}
 
-		protected internal virtual NetworkCredential CreateNetworkCredential(CredentialOptions options)
+		protected internal virtual LdapDirectoryIdentifier CreateIdentifier(LdapDirectoryIdentifier? defaultIdentifier, LdapDirectoryIdentifierOptions options)
 		{
-			return options != null
-				? new NetworkCredential(
-					options.UserName,
-					new NetworkCredential("UserName", options.Password).SecurePassword,
-					options.Domain)
-				: null;
+			if(defaultIdentifier == null)
+				throw new ArgumentNullException(nameof(defaultIdentifier));
+
+			if(options == null)
+				throw new ArgumentNullException(nameof(options));
+
+			return new LdapDirectoryIdentifier(options.Servers.ToArray(), options.Port ?? defaultIdentifier.PortNumber, options.FullyQualifiedDnsHostName ?? defaultIdentifier.FullyQualifiedDnsHostName, options.Connectionless ?? defaultIdentifier.Connectionless);
+		}
+
+		protected internal virtual void SetSession(LdapConnection connection, LdapSessionOptions options)
+		{
+			if(connection == null)
+				throw new ArgumentNullException(nameof(connection));
+
+			if(options == null)
+				throw new ArgumentNullException(nameof(options));
+
+			if(options.AutoReconnect != null)
+				connection.SessionOptions.AutoReconnect = options.AutoReconnect.Value;
+
+			if(options.DomainName != null)
+				connection.SessionOptions.DomainName = options.DomainName;
+
+			if(options.HostName != null)
+				connection.SessionOptions.HostName = options.HostName;
+
+			if(options.Locators != null)
+				connection.SessionOptions.LocatorFlag = options.Locators.Value;
+
+			if(options.PingKeepAliveTimeout != null)
+				connection.SessionOptions.PingKeepAliveTimeout = options.PingKeepAliveTimeout.Value;
+
+			if(options.PingLimit != null)
+				connection.SessionOptions.PingLimit = options.PingLimit.Value;
+
+			if(options.PingWaitTimeout != null)
+				connection.SessionOptions.PingWaitTimeout = options.PingWaitTimeout.Value;
+
+			if(options.ProtocolVersion != null)
+				connection.SessionOptions.ProtocolVersion = options.ProtocolVersion.Value;
+
+			if(options.QueryClientCertificateFunction != null)
+				connection.SessionOptions.QueryClientCertificate = (ldapConnection, clientCertificates) => options.QueryClientCertificateFunction(ldapConnection, clientCertificates);
+
+			if(options.ReferralCallback != null)
+				connection.SessionOptions.ReferralCallback = options.ReferralCallback;
+
+			if(options.ReferralChasing != null)
+				connection.SessionOptions.ReferralChasing = options.ReferralChasing.Value;
+
+			if(options.ReferralHopLimit != null)
+				connection.SessionOptions.ReferralHopLimit = options.ReferralHopLimit.Value;
+
+			if(options.RootDseCache != null)
+				connection.SessionOptions.RootDseCache = options.RootDseCache.Value;
+
+			if(options.SaslMethod != null)
+				connection.SessionOptions.SaslMethod = options.SaslMethod;
+
+			if(options.Sealing != null)
+				connection.SessionOptions.Sealing = options.Sealing.Value;
+
+			if(options.SecureSocketLayer != null)
+				connection.SessionOptions.SecureSocketLayer = options.SecureSocketLayer.Value;
+
+			if(options.SendTimeout != null)
+				connection.SessionOptions.SendTimeout = options.SendTimeout.Value;
+
+			if(options.Signing != null)
+				connection.SessionOptions.Signing = options.Signing.Value;
+
+			if(options.Sspi != null)
+				connection.SessionOptions.SspiFlag = options.Sspi.Value;
+
+			if(options.TcpKeepAlive != null)
+				connection.SessionOptions.TcpKeepAlive = options.TcpKeepAlive.Value;
+
+			if(options.TransportLayerSecurity != null && options.TransportLayerSecurity.Value)
+				connection.SessionOptions.StartTransportLayerSecurity(null);
+
+			if(options.VerifyServerCertificateFunction != null)
+				connection.SessionOptions.VerifyServerCertificate = (ldapConnection, certificate) => options.VerifyServerCertificateFunction(ldapConnection, certificate);
 		}
 
 		#endregion
