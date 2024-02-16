@@ -1,7 +1,9 @@
+#if !(NETCOREAPP3_1 || NET5_0)
 using System.DirectoryServices.Protocols;
+#endif
 using RegionOrebroLan.DirectoryServices.Protocols;
 using RegionOrebroLan.DirectoryServices.Protocols.Configuration;
-#if !NETFRAMEWORK
+#if !NETFRAMEWORK && !(NETCOREAPP3_1 || NET5_0)
 using System.Net;
 using System.Reflection;
 #endif
@@ -10,7 +12,7 @@ namespace UnitTests
 {
 	public class LdapConnectionFactoryTest
 	{
-#if !NETFRAMEWORK
+#if !NETFRAMEWORK && !(NETCOREAPP3_1 || NET5_0)
 		#region Fields
 
 		private static readonly FieldInfo _ldapConnectionCredentialField = typeof(LdapConnection).GetField("_directoryCredential", BindingFlags.Instance | BindingFlags.NonPublic)!;
@@ -25,6 +27,10 @@ namespace UnitTests
 		{
 			await Task.CompletedTask;
 
+#if NETCOREAPP3_1 || NET5_0
+			var platformNotSupportedException = Assert.Throws<PlatformNotSupportedException>(() => new LdapConnectionFactory().Create(new LdapConnectionOptions()));
+			Assert.Equal("System.DirectoryServices.Protocols is not supported on this platform.", platformNotSupportedException.Message);
+#else
 			using(var connection = new LdapConnectionFactory().Create(new LdapConnectionOptions()))
 			{
 				Assert.NotNull(connection);
@@ -34,6 +40,7 @@ namespace UnitTests
 				Assert.Empty(identifier.Servers);
 				Assert.Equal(389, identifier.PortNumber);
 			}
+#endif
 		}
 
 		[Fact]
@@ -55,6 +62,10 @@ namespace UnitTests
 
 			var options = new LdapConnectionOptionsParser().Parse("AuthenticationType=Basic;Credential.Domain=example;Credential.JoinDomainAndUserName=true;Credential.Password=P@ssword12;Credential.UserName=Alice;Identifier.Connectionless=false;Identifier.FullyQualifiedDnsHostName=true;Identifier.Port=636;Identifier.Servers=dc-01.example.org,dc-02.example.org,dc-03.example.org,dc-04.example.org;Session.AutoReconnect=true;Session.DomainName=example.org;Session.HostName=host.example.org;Session.Locators=DirectoryServicesPreferred|GCRequired|PdcRequired|KdcRequired|OnlyLdapNeeded|ReturnDnsName;Session.PingKeepAliveTimeout=00:10:00;Session.PingLimit=10;Session.PingWaitTimeout=00:00:10;Session.ProtocolVersion=3;Session.ReferralChasing=All;Session.RootDseCache=false;Session.Sealing=true;Session.SecureSocketLayer=true;Session.Signing=false;Session.Sspi=20;Session.TcpKeepAlive=false;Timeout=00:05:00");
 
+#if NETCOREAPP3_1 || NET5_0
+			var platformNotSupportedException = Assert.Throws<PlatformNotSupportedException>(() => new LdapConnectionFactory().Create(new LdapConnectionOptions()));
+			Assert.Equal("System.DirectoryServices.Protocols is not supported on this platform.", platformNotSupportedException.Message);
+#else
 			using(var connection = new LdapConnectionFactory().Create(options!))
 			{
 				Assert.NotNull(connection);
@@ -111,6 +122,7 @@ namespace UnitTests
 				Assert.Equal("Alice", credential.UserName);
 #endif
 			}
+#endif
 		}
 
 		#endregion
