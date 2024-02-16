@@ -6,7 +6,7 @@ Additions and extensions for .NET directory-services protocols.
 
 ## 1 Information
 
-Don't think LDAPS (Secure Socket Layer) will work on Linux with this version.
+Not sure LDAPS (Secure Socket Layer) will work on Linux with this version.
 
 ### 1.1 Connection-string
 
